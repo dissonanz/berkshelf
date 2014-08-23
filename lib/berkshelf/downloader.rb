@@ -126,6 +126,9 @@ module Berkshelf
           Archive::Tar::Minitar.unpack(tgz, unpack_dir.to_s)
         end
 
+        # Remove potential PaxHeader directories caused by bsd tar
+        FileUtils.rm_rf Dir.glob("#{unpack_dir}/**/PaxHeader")
+
         # The top level directory is inconsistant. So we unpack it and
         # use the only directory created in the unpack_dir.
         cookbook_directory = unpack_dir.entries.select do |filename|
